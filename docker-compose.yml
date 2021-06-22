@@ -1,0 +1,9 @@
+version: '3'
+services:
+    huxt:
+        restart: unless-stopped
+        build:
+            context: ./
+            dockerfile: Dockerfile
+        volumes:
+            - ./figures:/huxt/figures
