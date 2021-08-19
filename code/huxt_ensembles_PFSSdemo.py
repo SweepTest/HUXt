@@ -11,18 +11,21 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sys
 import os
-sys.path.append(os.path.abspath(os.environ['DBOX'] + 'python_repos\\HUXt\\code'))
+sys.path.append('/code')
 import huxt_inputs as Hin
 import huxt as H
 import huxt_ensembles as Hens
+
+huxtpath = sys.argv[1]
+filepath = sys.argv[2]; 
+savedir =  sys.argv[3]
 
 #==============================================================================
 N=100 #number of ensemble members
 lat_rot_sigma = 5*np.pi/180 #The standard deviation of the Gaussain from which the rotational perturbation is drawn
 lat_dev_sigma = 2*np.pi/180 #The standard deviation of the Gaussain from which the linear latitudinal perturbation is drawn                          
 long_dev_sigma = 2*np.pi/180 #The standard deviation of the Gaussain from which the linear longitudinal perturbation is drawn
-#filepath = os.environ['DBOX'] + 'Papers_WIP\\_coauthor\\AnthonyYeates\\windbound_b_pf720_20130816.12.nc'; cr = 999
-filepath = os.environ['DBOX'] + 'Papers_WIP\\_coauthor\\AnthonyYeates\\windbound_b20181105.12.nc'; 
+#filepath = os.environ['DBOX'] + 'Papers_WIP/_coauthor/AnthonyYeates/windbound_b_pf720_20130816.12.nc'; cr = 999
 cr=2210.3
 r_in = 21.5*u.solRad #the radial distance of the speed map
 simtime=27*u.day     #HUXt simulation time
@@ -78,7 +81,7 @@ for i in range(0, N):
 nsteps = int(np.floor(simtime.value*24*60*60/model.dt.value/dt_scale))
 huxtoutput = np.ones((N,nsteps))
 
-os.chdir(os.environ['DBOX'] + 'python_repos\\HUXt\\code')
+os.chdir(huxtpath + '/code')
 for i in range(0,N):
     model = H.HUXt(v_boundary=vr128_ensemble[i]* (u.km/u.s), simtime=simtime, 
                    dt_scale=dt_scale, cr_num= cr, lon_out=0.0*u.deg, 
@@ -132,12 +135,11 @@ plt.title('HUXt output at Earth')
 #==============================================================================
 #save the ensemble, e,g for use with DA
 #==============================================================================
-savenow = 0
+savenow = 1
 if savenow:
     import h5py
-    savedir =  os.path.abspath(os.environ['DBOX'] + 'Papers_WIP\\_coauthor\\MattLang\\HelioMASEnsembles_python')
     
-    h5f = h5py.File(savedir + '\\CR' + str(cr) +'_vin_ensemble.h5', 'w')
+    h5f = h5py.File(savedir + '/CR' + str(cr) +'_vin_ensemble.h5', 'w')
     h5f.create_dataset('Vin_ensemble', data=vr128_ensemble)
     h5f.attrs['lat_rot_sigma'] = lat_rot_sigma
     h5f.attrs['lat_dev_sigma'] = lat_dev_sigma

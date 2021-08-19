@@ -18,4 +18,4 @@ RUN mkdir /huxt/figures
 WORKDIR /huxt/code
 
 # Run the code (change later)
-ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "huxt", "python3", "HUXt_example.py"]
+ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "huxt", "python3", "huxt_ensembles_PFSSdemo.py", "/huxt", "/huxt/data/pfss/windbound_b_pfss20181105.12.nc", "/huxt/figures"]
