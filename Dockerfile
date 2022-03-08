@@ -19,6 +19,7 @@ COPY ./ /huxt/
 # will not cause a huge rebuild of the docker container chain
 COPY ./run_huxt.sh run_huxt.sh
 RUN chmod +x run_huxt.sh
+RUN chmod +x entrypoint.sh
 
 ARG SNAPTIME
 ENV SNAPTIME $SNAPTIME
@@ -30,3 +31,4 @@ ARG INPUTPATH
 ENV INPUTPATH $INPUTPATH
 
 ENTRYPOINT ["./entrypoint.sh"]
+
